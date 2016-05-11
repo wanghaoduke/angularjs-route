@@ -1,0 +1,1 @@
+var commentApp = angular.module('app', ['wenCtrl', 'wenService','wenRoute']);
