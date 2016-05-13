@@ -34,13 +34,6 @@ class WenController extends Controller
     
     public function store(Request $request)
     {
-        //
-        //$data=array(
-
-        //    'title'=>$request->input('title'),
-       //     'text'=>$request ->input('text')
-     //       );
-     //   Wen::create($date);
         $wen=new Wen;
         $wen->title=$request->input('title');
         $wen->text=$request->input('text');
@@ -54,6 +47,15 @@ class WenController extends Controller
         $wen=Wen::find($id);
         
         return response()->json($wen);
+    }
+
+    public function storeNew (Request $request){
+
+        $wen=Wen::find($request->input('id'));
+        $wen->title=$request->input('title');
+        $wen->text=$request->input('text');
+        $wen->save();
+        return response()->json(array('success'=>true));
     }
    
     public function destroy($id)

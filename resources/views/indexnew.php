@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <title>基于angular和laravel的单页面</title>
 </head>
-<body ng-app="app" ng-controller="wenController">
+<body ng-app="app" >
    <!--bootstrape 的载入 -->
   <link rel="stylesheet" type="text/css" href="dist/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="dist/css/bootstrap-theme.min.css">
-     <!-- js的载入 -->
+     <!-- angularjs的载入 -->
       <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
       <script src="http://apps.bdimg.com/libs/angular-route/1.3.13/angular-route.js"></script>
-
+      <!-- 一些要用的js的导入 -->
     <script src="js/controllers/wenCtrl.js"></script> 
     <script src="js/services/wenService.js"></script> 
     <script src="js/wenApp.js"></script> 

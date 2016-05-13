@@ -1,173 +1,146 @@
-angular.module('wenCtrl',[])
-  .controller('wenController',function($scope,$http,Wen){
-    $scope.wenData={};
-    $scope.commentData = {};
-     $scope.loading = true;
-     $scope.creating=false;
-     $scope.showing=false;
-     $scope.creatingC=false;
-     $scope.loadComm=true;
-     $scope.listShow=true;
-     $scope.pagetest=1;
+var wenApp=angular.module('wenCtrl',[]);
+
+
+
+//文章列表控制器
+wenApp.controller('wenHomeController',function($scope,$http,Wen){
+  $scope.loading=true; //定义一个值用了判断文章列表是否在加载
+  Wen.get()          //获取默认的第一页的数据
+    .success(function(data){
+      var list=data;
+      var sum=list.length;
+      $scope.pages=Math.ceil(sum/5);
+      $scope.wens=data.slice(0,5);
+      $scope.loading=false;
+      $scope.pageList=new Array();
+      for (var i = 0; i<$scope.pages; i++) {
+          $scope.pageList[i]={"id":i,"pa":i+1};
+        }
+    });
+  $scope.listPage=function(page){
+    var a=page*5;
+    $scope.loading=true;
     Wen.get()
-      .success(function(data){ 
-        $scope.list=data;
-        var sum=$scope.list.length;
+      .success(function(data){
+        var list=data;
+        var sum=list.length;
         $scope.pages=Math.ceil(sum/5);
-        
-                 
-          $scope.wens=data.slice(0,5);
+        $scope.wens=data.slice(a-5,a);
+        console.log($scope.wens);
+        $scope.loading=false;
         $scope.pageList=new Array();
         for (var i = 0; i<$scope.pages; i++) {
           $scope.pageList[i]={"id":i,"pa":i+1};
         }
-        
-        $scope.loading = false;
-     });
-
-    $scope.listPage=function(page){
-      var pa=page+1;
-      
-      $scope.loading=true;
-     Wen.get()
-      .success(function(data){ 
-        $scope.list=data;
-        var sum=$scope.list.length;
-        $scope.pages=Math.ceil(sum/5);
-        var a=pa*5; 
-         
-         
-          $scope.wens=data.slice(a-5,a);
-        //console.log($scope.wens);
-        $scope.loading = false;
-     });
-    }; 
-    
-    //Wen.getList(1)
-      //.success(function(data){
-       
-      //  $scope.wens=data;
-     //   $scope.loading=false;
-   //   });
-      $scope.wenList=function(page){
-        $scope.loading=true;
-        Wen.getList(page)
+      });
+  };
+  $scope.deleteWen=function(wenId){
+    Wen.destroy(wenId)
+      .success(function(){
+        Wen.get()          //获取默认的第一页的数据
           .success(function(data){
-            $scope.wens=data;
+            var list=data;
+            var sum=list.length;
+            $scope.pages=Math.ceil(sum/5);
+            $scope.wens=data.slice(0,5);
             $scope.loading=false;
-          })
-      };
-
-            $scope.submitWen = function() {
-            $scope.loading = true; // 处理的时候，显示任务加载
-            
-            Wen.save($scope.wenData)
-              .success(function() {
-                    // 保存成功后，清空评论框，并重新加载全部评论
-                    $scope.wenData = {};
-                    $scope.creating=false;                
-                     Wen.get()
-                       .success(function(data){ 
-                          $scope.list=data;
-                          var sum=$scope.list.length;
-                           $scope.pages=Math.ceil(sum/5);
-        
-                 
-                            $scope.wens=data.slice(0,5);
-                            $scope.pageList=new Array();
-                            for (var i = 0; i<$scope.pages; i++) {
-                              $scope.pageList[i]={"id":i,"pa":i+1};
-                            }
-        
-                            $scope.loading = false;
-                            
-     });
-
-                })
-                .error(function(data) {
-                    console.log(data); 
-                });
-        };
-
-
-      $scope.deleteWen=function(id){
-        $scope.loading = true; 
-        Wen.destroy(id)
-          .success(function(data){
-             Wen.get()
-      .success(function(data){ 
-        $scope.list=data;
-        var sum=$scope.list.length;
-        $scope.pages=Math.ceil(sum/5);
-        
-                 
-          $scope.wens=data.slice(0,5);
-        $scope.pageList=new Array();
-        for (var i = 0; i<$scope.pages; i++) {
-          $scope.pageList[i]={"id":i,"pa":i+1};
-        }
-        
-        $scope.loading = false;
-     });
-          });
-      };
-
-
-     $scope.fabuWen=function(){
-      $scope.creating=true;
-     } ;
-
-     $scope.showWen=function(id){
-
-      Wen.showWen(id)
-        .success(function(data){
-          $scope.swen=data;
-          $scope.showing=true;
+            $scope.pageList=new Array();
+            for (var i = 0; i<$scope.pages; i++) {
+              $scope.pageList[i]={"id":i,"pa":i+1};
+            }
         });
-        Wen.getComments(id)
-          .success(function(CommData){
-            $scope.comments=CommData;
+      });
+  };
+});
+
+
+
+
+//文章的创建控制器
+wenApp.controller('wenCreateController',function($scope,$http,Wen){
+  $scope.wenData={}; //定义wenData是一个对象
+  $scope.store=false;
+  $scope.submitWen = function(){
+    Wen.save($scope.wenData)
+      .success(function(){
+        $scope.wenData = {};   //清空表内内容
+        $scope.store=true;
+      })
+      .error(function(data){
+        console.log(data);
+      });
+  };
+});
+
+
+
+
+//文章显示页面控制器
+wenApp.controller('wenShowController',function($scope,$http,$routeParams,Wen){
+  $scope.loadWen=true;
+  $scope.loadComm=true;
+  var wenId=$routeParams.wenId;
+  Wen.showWen(wenId)
+    .success(function(data){
+      $scope.swen=data;
+      $scope.loadWen=false;
+      //console.log($scope.swen);
+    });
+  Wen.getComments(wenId)
+    .success(function(data){
+      $scope.comments=data;
+      $scope.loadComm=false;
+      //console.log($scope.comment);
+    });
+  $scope.destroyComm=function(commId){
+    $scope.loadComm=true;
+    Wen.destroyComment(commId)
+      .success(function(){
+        Wen.getComments(wenId)
+          .success(function(data){
+            $scope.comments=data;
             $scope.loadComm=false;
           });
-     };
-
-     $scope.showList=function(){
-      $scope.showing=false;
-     };
+      });
+  };
+});
 
 
 
 
-     $scope.createComm=function(){
-      $scope.creatingC=true;
-     };
-     
-     $scope.storeComm=function(wen_id){
-      $scope.creatingC=false;
-      $scope.loadComm=true;
-      console.log($scope.commentData);
-      Wen.saveComment(wen_id,$scope.commentData)
-        .success(function(getData){
-          $scope.commentData={};
-          Wen.getComments(wen_id)
-            .success(function(CommData){
-              $scope.comments=CommData;
-              $scope.loadComm=false;
-            });
-        });
-     };
+//文章edit页面控制器
+wenApp.controller('wenEditController',function($scope,$http,$routeParams,Wen){
+  $scope.change=false;
+  var wenId=$routeParams.wenId;
+  Wen.showWen(wenId)
+    .success(function(data){
+      $scope.swen=data;
+    });
+  $scope.editWen=function(){
+    console.log($scope.swen);
+    Wen.editWen($scope.swen)
+      .success(function(){
+        $scope.change=true;
+      });
+  };    
+});
 
-     $scope.destroyComm=function(wen_id,id){
-      $scope.loadComm=true;
-      Wen.destroyComment(id)
-        .success(function(data){
-          Wen.getComments(wen_id)
-            .success(function(CommData){
-              $scope.comments=CommData;
-              $scope.loadComm=false;
-            });
 
-        })
-     }
 
-  });
+
+//创建comment页面的控制器
+wenApp.controller('commCreateController',function($scope,$http,$routeParams,Wen){
+  $scope.createComm=true;
+  //$scope.commentData={};
+  $scope.wenId=$routeParams.wenId;
+  var wenId=$routeParams.wenId;
+  $scope.storeComm=function(){
+    Wen.saveComment(wenId,$scope.commentData)
+      .success(function(){
+        $scope.createComm=false;
+      });
+  };
+});
+
+
+ 

@@ -5,9 +5,6 @@ angular.module('wenService',[])
       get:function(){
         return $http.get('api/wens');
       },
-      getList:function(page){
-        return $http.get('api/wens/list/'+page);
-      },
       save : function(wenData) {
                 return $http({
                     method: 'POST',
@@ -21,8 +18,13 @@ angular.module('wenService',[])
       showWen:function(id){
         return $http.get('api/wens/'+id);
       },
-
-
+      editWen : function(wenData) {
+                return $http({
+                    method: 'POST',
+                    url: 'api/wens/storeNew',
+                    data: wenData
+                });
+            },
 
 
       getComments:function(wen_id){

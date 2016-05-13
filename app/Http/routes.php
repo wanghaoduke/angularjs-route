@@ -22,6 +22,7 @@ Route::get('api/comments/{wen_id}',['uses'=>'WenController@showComm','as'=>'show
 Route::post('api/comments/{wen_id}',['uses'=>'WenController@storeComm','as'=>'storeComm']);
 Route::delete('api/comments/{id}',['uses'=>'WenController@destroyComm','as'=>'destroyComm']);
 Route::get('api/wens/list/{wenList_id?}',['uses'=>'WenController@showWens','as'=>'showWens']);
+Route::post('api/wens/storeNew',['uses'=>'WenController@storeNew','as'=>'storeNew']);
 Route::group(array('prefix'=>'api'),function (){
   Route::resource('wens','WenController',
     array('only'=>array('index','store','destroy','show')));
