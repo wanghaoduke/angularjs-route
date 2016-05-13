@@ -84,7 +84,6 @@ wenApp.controller('wenShowController',function($scope,$http,$routeParams,Wen){
     .success(function(data){
       $scope.swen=data;
       $scope.loadWen=false;
-      //console.log($scope.swen);
     });
   Wen.getComments(wenId)
     .success(function(data){
