@@ -1,7 +1,6 @@
 var wenApp=angular.module('wenCtrl',[]);
 
 
-
 //文章列表控制器
 wenApp.controller('wenHomeController',function($scope,$http,Wen){
   $scope.loading=true; //定义一个值用了判断文章列表是否在加载
