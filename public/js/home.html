@@ -1,0 +1,50 @@
+
+
+  
+
+
+<!--文章列表板块-->
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+  <div class="panel panel-default">
+  <div class="panel-heading text-center">
+  <h3>文章列表</h3>
+  </div>
+  <div class="panel-body">
+  <p class="text-center" ng-show="loading">请等待...</span></p>
+
+  <ul class="list-unstyled" ng-hide="loading">
+  <li ng-repeat="wen in wens"><a href="#/wen/{{wen.id}}">{{wen.title}}</a>
+  <p><a href="#/" ng-click="deleteWen(wen.id)"><button class="btn btn-danger">删除</button></a></p>
+  </li>
+  </ul>
+  </div>
+
+  <div class="panel-footer text-center">
+<nav>                     <!--   在panelfooter设置一个分页 -->
+  <ul class="pagination">
+    <li ng-repeat="page in pageList" ><a href="#/" ng-click='listPage(page)'>{{page}}</a></li>  
+  </ul>
+</nav>
+  </div>
+  </div> 
+  </div>
+  </div> <!--row-->
+
+
+
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+  <div class="panel panel-default"> 
+  <div class="panel-heading"> 
+  <!--发布新的按钮-->
+  <p align="center"><a href="#/createWen"><button type="button" class="btn btn-info" >发布新文章</button></a></p>
+ 
+  </div>
+  </div>
+  </div>
+  </div>
+
+

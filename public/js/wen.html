@@ -1,0 +1,43 @@
+
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+  <div class="panel panel-default"> 
+  <div class="panel-heading">
+    <h3 align="center" ng-show="loadWen">正在更新...</h3> 
+    <h3 align="center" ng-hide='loadWen'>{{swen.title}}</h3>
+   </div>
+   <div class="panel-body">
+   <p ng-show='loadWen'>正在更新...</p> 
+   <p ng-hide='loadWen'>{{swen.text}}</p> 
+   </div>
+   <div class="panel-footer text-center">
+   <a href="/#/wen/{{swen.id}}/edit"><button class="btn btn-warning">修改文章</button></a> 
+   </div>
+  </div>
+  </div>
+</div>
+
+
+
+<div class="row">
+<div class="col-md-6 col-md-offset-3">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p align="center">文章的评论</p>
+</div>
+ <div class="panel-body">
+<div ng-show="loadComm"><p align="center">正在更新...</p></div>
+<div ng-hide="loadComm">
+<dl ng-repeat="comment in comments">
+<dt>{{comment.user}}<p align="right"><button class="btn btn-danger" ng-click='destroyComm(comment.id)' >删除</button></p></dt>
+<dd>{{comment.comm}}</dd><hr>
+</dl>
+</div>
+</div> 
+<div class="panel-footer">
+<p align="center"><a href="/#/wen/{{swen.id}}/createComm"><button class="btn btn-danger">发布新评论</button></a></p>
+</div>
+</div>
+</div>
+</div>

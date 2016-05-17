@@ -14,7 +14,7 @@ wenApp.controller('wenHomeController',function($scope,$http,Wen){
       $scope.loading=false;
       $scope.pageList=new Array();
       for (var i = 0; i<$scope.pages; i++) {
-          $scope.pageList[i]={"id":i,"pa":i+1};
+          $scope.pageList[i]=i+1;
         }
     });
   $scope.listPage=function(page){
@@ -30,7 +30,7 @@ wenApp.controller('wenHomeController',function($scope,$http,Wen){
         $scope.loading=false;
         $scope.pageList=new Array();
         for (var i = 0; i<$scope.pages; i++) {
-          $scope.pageList[i]={"id":i,"pa":i+1};
+          $scope.pageList[i]=i+1;
         }
       });
   };
@@ -46,7 +46,7 @@ wenApp.controller('wenHomeController',function($scope,$http,Wen){
             $scope.loading=false;
             $scope.pageList=new Array();
             for (var i = 0; i<$scope.pages; i++) {
-              $scope.pageList[i]={"id":i,"pa":i+1};
+              $scope.pageList[i]=i+1;
             }
         });
       });
